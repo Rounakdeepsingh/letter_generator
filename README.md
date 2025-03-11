@@ -178,7 +178,7 @@ For feedback and suggestions, please raise an issue or submit a pull request.
 
 📬 Contact
 
-For any inquiries, reach out via email: [your-email@example.com]
+For any inquiries, reach out via email: rounakdeepsingh54@gmail.com
 
 
 🚀 Ready to automate your letter generation? Clone now and get started!
