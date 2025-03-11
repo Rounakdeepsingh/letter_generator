@@ -1,3 +1,4 @@
+# letter_generator.py
 from flask import Flask, render_template, request, send_file, session, flash, redirect, url_for
 import google.generativeai as genai
 import os
@@ -12,15 +13,15 @@ from datetime import datetime
 load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
 if not API_KEY:
-    raise ValueError("API key not found.  Please set GEMINI_API_KEY in your environment variables.")
+    raise ValueError("API key not found.  Set GEMINI_API_KEY in environment variables.")
 
 genai.configure(api_key=API_KEY)
 
-app = Flask(__name__)  # Corrected:  Double underscores for __name__
-app.secret_key = "your_secret_key"  # Replace with a strong, randomly generated secret key!
+app = Flask(__name__)  # Corrected: Use __name__
+app.secret_key = "your_secret_key"  # Replace with a strong, random secret key
 
 # Model selection
-MODEL_NAME = "gemini-1.5-pro"  # Or any other valid model name
+MODEL_NAME = "gemini-1.5-pro"  # Or another suitable model
 
 def generate_letter(letter_type, **kwargs):
     date_today = datetime.today().strftime("%d %B %Y")
@@ -45,7 +46,7 @@ def generate_letter(letter_type, **kwargs):
 
         - Closing:
             - Thanking You,
-            - Your Obediently,
+            - Yours Obediently,
         """
 
     elif letter_type == "fee_receipt":
@@ -68,7 +69,7 @@ def generate_letter(letter_type, **kwargs):
 
         - Closing:
             - Thanking You,
-            - Your Obediently,
+            - Yours Obediently,
         """
 
     elif letter_type == "on_duty":
@@ -84,13 +85,13 @@ def generate_letter(letter_type, **kwargs):
         - Subject: Requisition for On Duty Reg.
         
         - Body:
-            - As Iam/We are interested/Registered for the program on {kwargs.get('program_name')} at {kwargs.get('program_location')}.
+            - As I am/We are interested/Registered for the program on {kwargs.get('program_name')} at {kwargs.get('program_location')}.
             - From {kwargs.get('from_date')} to {kwargs.get('to_date')}.
             - In this regard I/we request you to Kindly issue me/us the On Duty. Kindly do the needful at the earliest.
         
         - Closing:
             - Thanking You,
-            - Your Obediently,
+            - Yours Obediently,
         """
 
     elif letter_type == "leave":
@@ -115,7 +116,7 @@ def generate_letter(letter_type, **kwargs):
 
         - Closing:
             - Thanking You,
-            - Your Obediently,
+            - Yours Obediently,
 
         - Parent Details:
             - Parent Name: {kwargs.get('parent_name')}
@@ -145,7 +146,7 @@ def generate_letter(letter_type, **kwargs):
 
         - Closing:
             - Thanking You,
-            - Your Obediently,
+            - Yours Obediently,
 
         - Parent Details:
             - Parent Name: {kwargs.get('parent_name')}
@@ -180,7 +181,7 @@ def generate_letter(letter_type, **kwargs):
 
         - Closing:
             - Thanking You,
-            - Your Obediently,
+            - Yours Obediently,
 
         """
 
@@ -203,7 +204,7 @@ def generate_letter(letter_type, **kwargs):
 
         - Closing:
             - Thanking You,
-            - Your Obediently,
+            - Yours Obediently,
 
         """
 
@@ -227,13 +228,15 @@ def generate_letter(letter_type, **kwargs):
 
         - Closing:
             - Thanking You,
-            - Your Obediently,
+            - Yours Obediently,
 
         - Parent Details:
             - Parent Name: {kwargs.get('parent_name')}
             - Relation: Father/Mother
             - Parent Mobile No.: {kwargs.get('parent_mobile')}
         """
+    else:  # Added an else statement to avoid UnboundLocalError
+        return "Invalid letter type selected."
 
     try:
         model = genai.GenerativeModel(MODEL_NAME)
@@ -241,28 +244,24 @@ def generate_letter(letter_type, **kwargs):
         return response.text.strip()
     except Exception as e:
         error_message = f"Error generating letter: {e}"
-        print(error_message)  # Log the error for debugging
+        print(error_message)  # Log the error
         return error_message
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     letter = None
     current_year = datetime.now().year
-    letter_type = session.get("letter_type", None)
+    letter_type = session.get("letter_type")  # No default value, simplifies logic
 
     if request.method == "POST":
-        # Get letter_type, either from form (initial selection) or session (subsequent requests)
+        # Always get letter_type from form *if* present, otherwise use session
         if 'letter_type' in request.form:
-            letter_type = request.form.get("letter_type")
-            session["letter_type"] = letter_type  # Store in session
-        else:
-            letter_type = session.get("letter_type")  # Retrieve from session
+            letter_type = request.form['letter_type']
+            session["letter_type"] = letter_type  # Update session
 
-        if letter_type:  # Check if a letter type is selected
+        if letter_type: # Only proceed if letter_type is valid
             if 'generate' in request.form:
                 # Collect form data (using .get() to handle missing fields)
-                #  Crucially, *all* fields are collected here, even if they are
-                #  only used by some letter types.  This avoids KeyErrors.
                 form_data = {
                     "name": request.form.get("name"),
                     "vh_no": request.form.get("vh_no"),
@@ -278,7 +277,7 @@ def index():
                     "leave_going_to": request.form.get("leave_going_to"),
                     "leave_from": request.form.get("leave_from"),
                     "leave_to": request.form.get("leave_to"),
-                    "leave_reason": request.form.get("leave_reason"),  # Corrected: Added leave_reason
+                    "leave_reason": request.form.get("leave_reason"), # Added leave_reason
                     "attendance": request.form.get("attendance"),
                     "period": request.form.get("period"),
                     "parent_name": request.form.get("parent_name"),
@@ -296,46 +295,39 @@ def index():
                     "period_end": request.form.get("period_end")
                 }
                 letter = generate_letter(letter_type, **form_data)
-                if "Error" in letter:
-                   flash(f"Error generating the letter: {letter}", "error")
-                session["letter"] = letter  # Store the generated letter
+                if "Error" in letter:  # Check for error string directly
+                    flash(letter, "error")  # Use the full error message
+                else:
+                    session["letter"] = letter # Store letter in session
+            # Removed the else condition as it is handled inside letter generation
+        else:
+            flash("Please select a letter type.", "error")  # Important for first load
 
-            else:  # The "Proceed" button was pressed, but no 'generate'
-                flash("Please select a letter type.", "error") # Added
-
-        # No else needed:  If letter_type is None, we just fall through
-        # and re-render the template, showing the initial form.
-
-    return render_template("index.html", letter=session.get("letter", None), current_year=current_year, letter_type=letter_type)
-
-
+    return render_template("index.html", letter=session.get("letter"), current_year=current_year, letter_type=letter_type)
 
 @app.route("/form_fields")
 def form_fields():
     letter_type = request.args.get("letter_type")
+
     if not letter_type:
         return "Please select a letter type.", 400
-    form_html = render_template("form_fields.html", letter_type=letter_type) #form_fields.html
+
+    form_html = render_template("form_fields.html", letter_type=letter_type)
     return form_html
 
 @app.route("/download", methods=["POST"])
 def download_pdf():
     letter_text = request.form.get("edited_letter", "No letter generated.")
     buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)  # Corrected: Use imported 'letter'
+    doc = SimpleDocTemplate(buffer, pagesize=letter)  # Correct
     styles = getSampleStyleSheet()
     style = ParagraphStyle(name='LetterStyle', fontName='Helvetica', fontSize=12, leading=14, spaceAfter=12)
 
-    letter_paragraphs = letter_text.strip().split("\n\n")  # Split by double newlines
-    flowables = []
-    for para in letter_paragraphs:
-        # Replace single newlines with <br /> for HTML-style line breaks within paragraphs
-        paragraph = Paragraph(para.replace("\n", "<br />"), style)
-        flowables.append(paragraph)
-
+    letter_paragraphs = letter_text.strip().split("\n\n")
+    flowables = [Paragraph(para.replace("\n", "<br />"), style) for para in letter_paragraphs]
     doc.build(flowables)
     buffer.seek(0)
-    return send_file(buffer, as_attachment=True, download_name="generated_letter.pdf")#Corrected:download_name
+    return send_file(buffer, as_attachment=True, download_name="generated_letter.pdf")
 
 
 @app.route("/home")
@@ -344,5 +336,5 @@ def home():
     session.pop("letter", None)
     return redirect(url_for("index"))
 
-if __name__ == "__main__":  # Corrected: Double underscores for __main__
+if __name__ == "__main__":  # Corrected: __name__
     app.run(debug=True)
