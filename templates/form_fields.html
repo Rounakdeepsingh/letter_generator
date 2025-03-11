@@ -1,0 +1,141 @@
+<!-- form_fields.html -->
+{% if letter_type == "bonafide" %}
+<div class="mb-3">
+    <label for="name" class="form-label">Name (IN CAPITAL, AS PER THE 10TH MARK SHEET)</label>
+    <input type="text" class="form-control" id="name" name="name" required>
+</div>
+<div class="mb-3">
+    <label for="vh_no" class="form-label">Vh.No./Reg. No.:</label>
+    <input type="text" class="form-control" id="vh_no" name="vh_no" required>
+</div>
+<div class="mb-3">
+    <label for="bonafide_for" class="form-label">Requisition for Bonafide Certificate for</label>
+    <input type="text" class="form-control" id="bonafide_for" name="bonafide_for" required>
+</div>
+<div class="mb-3">
+    <label for="bonafide_reason" class="form-label">I/We are in need of bonafide certificate for</label>
+    <input type="text" class="form-control" id="bonafide_reason" name="bonafide_reason" required>
+</div>
+{% endif %}
+
+{% if letter_type == "fee_receipt" %}
+<div class="mb-3">
+    <label for="name" class="form-label">Name (IN CAPITAL, AS PER THE 10TH MARK SHEET)</label>
+    <input type="text" class="form-control" id="name" name="name" required>
+</div>
+<div class="mb-3">
+    <label for="vh_no" class="form-label">Vh.No./Reg. No.:</label>
+    <input type="text" class="form-control" id="vh_no" name="vh_no" required>
+</div>
+<div class="mb-3">
+    <label for="fee_receipt_reason" class="form-label">As I am in need of the Fee Receipt(s) for</label>
+    <input type="text" class="form-control" id="fee_receipt_reason" name="fee_receipt_reason" required>
+</div>
+<div class="mb-3">
+  <label for="purpose" class="form-label">Purpose.</label>
+  <input type="text" class="form-control" id="purpose" name="purpose" required>
+</div>
+{% endif %}
+
+{% if letter_type == "on_duty" %}
+<div class="mb-3">
+    <label for="name" class="form-label">Name (IN CAPITAL, AS PER THE 10TH MARK SHEET)</label>
+    <input type="text" class="form-control" id="name" name="name" required>
+</div>
+<div class="mb-3">
+    <label for="vh_no" class="form-label">Vh.No./Reg. No.:</label>
+    <input type="text" class="form-control" id="vh_no" name="vh_no" required>
+</div>
+<div class="mb-3">
+    <label for="program_name" class="form-label">As Iam/We are interested/Registered for the program on</label>
+    <input type="text" class="form-control" id="program_name" name="program_name" required>
+</div>
+<div class="mb-3">
+    <label for="program_location" class="form-label">At</label>
+    <input type="text" class="form-control" id="program_location" name="program_location" required>
+</div>
+<div class="mb-3">
+    <label for="from_date" class="form-label">From</label>
+    <input type="date" class="form-control" id="from_date" name="from_date" required>
+</div>
+<div class="mb-3">
+    <label for="to_date" class="form-label">To</label>
+    <input type="date" class="form-control" id="to_date" name="to_date" required>
+</div>
+{% endif %}
+
+{% if letter_type == "leave" %}
+<div class="mb-3">
+    <label for="name" class="form-label">Name (IN CAPITAL, AS PER THE 10TH MARK SHEET)</label>
+    <input type="text" class="form-control" id="name" name="name" required>
+</div>
+<div class="mb-3">
+    <label for="vh_no" class="form-label">Vh.No./Reg. No.:</label>
+    <input type="text" class="form-control" id="vh_no" name="vh_no" required>
+</div>
+<div class="mb-3">
+    <label for="year_sem_batch_class" class="form-label">Year/ Sem/ Batch/ Class:</label>
+    <input type="text" class="form-control" id="year_sem_batch_class" name="year_sem_batch_class" required>
+</div>
+<div class="mb-3">
+    <label for="leave_going_to" class="form-label">As I am going to</label>
+    <input type="text" class="form-control" id="leave_going_to" name="leave_going_to" required>
+</div>
+<div class="mb-3">
+    <label for="leave_from" class="form-label">From</label>
+    <input type="date" class="form-control" id="leave_from" name="leave_from" required>
+</div>
+<div class="mb-3">
+    <label for="leave_to" class="form-label">To</label>
+    <input type="date" class="form-control" id="leave_to" name="leave_to" required>
+</div>
+<div class="mb-3">
+    <label for="leave_reason" class="form-label">leave reason</label>
+    <input type="text" class="form-control" id="leave_reason" name="leave_reason" required>
+</div>
+<div class="mb-3">
+    <label for="attendance" class="form-label">% ATTENDANCE</label>
+    <input type="number" class="form-control" id="attendance" name="attendance" required>
+</div>
+<div class="mb-3">
+    <label for="period" class="form-label">PERIOD</label>
+    <input type="text" class="form-control" id="period" name="period" required>
+</div>
+<div class="mb-3">
+    <label for="parent_name" class="form-label">Parent Name</label>
+    <input type="text" class="form-control" id="parent_name" name="parent_name" required>
+</div>
+<div class="mb-3">
+    <label for="parent_mobile" class="form-label">Parent Mobile No.</label>
+    <input type="text" class="form-control" id="parent_mobile" name="parent_mobile" required>
+</div>
+{% endif %}
+
+{% if letter_type == "apology" %}
+<div class="mb-3">
+    <label for="name" class="form-label">Name (IN CAPITAL, AS PER THE 10TH MARK SHEET)</label>
+    <input type="text" class="form-control" id="name" name="name" required>
+</div>
+<div class="mb-3">
+    <label for="vh_no" class="form-label">Vh.No./Reg. No.:</label>
+    <input type="text" class="form-control" id="vh_no" name="vh_no" required>
+</div>
+<div class="mb-3">
+    <label for="year_sem_batch_class" class="form-label">Year/ Sem/ Batch/ Class:</label>
+    <input type="text" class="form-control" id="year_sem_batch_class" name="year_sem_batch_class" required>
+</div>
+<div class="mb-3">
+  <label for="apology_done" class="form-label">As I have done</label>
+  <input type="text" class="form-control" id="apology_done" name="apology_done" required>
+</div>
+<div class="mb-3">
+    <label for="attendance" class="form-label">% ATTENDANCE</label>
+    <input type="number" class="form-control" id="attendance" name="attendance" required>
+</div>
+<div class="mb-3">
+    <label for="period" class="form-label">PERIOD</label>
+    <input type="text" class="form-control" id="period" name="period" required>
+</div>
+<div class="mb-3">
+    <label for="parent_name" class="form-label">Parent Name</label>
+    <input type="text" class="form-control" id="parent_name" name="parent
