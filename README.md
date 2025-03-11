@@ -128,7 +128,6 @@ User-friendly and professional templates.
    ![image](https://github.com/user-attachments/assets/b5edd52a-5fc7-4d0b-8a86-1307b799e0c1)
 
 
-
 💼 Contribution Guidelines
 
 We welcome contributions from the community!
